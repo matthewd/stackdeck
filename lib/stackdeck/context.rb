@@ -15,7 +15,7 @@ module StackDeck
         pre_range, post_range = context_ranges(lines, index)
         @before_lineno = pre_range.begin
         @before = lines[pre_range]
-        @line = lines[index].chomp
+        @line = lines[index]
         @after = lines[post_range]
       else
         @line = lines.join("\n")
@@ -24,7 +24,7 @@ module StackDeck
 
     class File < Context
       def initialize(filename, lineno)
-        super ::File.readlines(filename), lineno
+        super ::File.readlines(filename).map {|l| l.chomp }, lineno
       end
     end
   end
