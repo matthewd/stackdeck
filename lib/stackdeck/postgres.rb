@@ -33,18 +33,21 @@ module StackDeck
         def context
           @context ||= Context::PgProc.new(@db_connection, function, lineno) if @db_connection
         end
+        def context?
+          !context.nil?
+        end
         def language
           @language.gsub(/ function$/, '')
         end
       end
 
-      def self.extract(ex)
+      def self.extract(ex, conn=nil)
         postgres_stack = []
         if ex.internal_query
           postgres_stack << Frame::SQL.from_char(ex.internal_query, ex.internal_position)
         end
         if ex.context
-          postgres_stack.concat ex.context.split(/\n/).map {|s| parse(s) }
+          postgres_stack.concat ex.context.split(/\n/).map {|s| parse(s, conn) }
         end
         if ex.query
           postgres_stack << Frame::SQL.from_char(ex.query, ex.query_position)
