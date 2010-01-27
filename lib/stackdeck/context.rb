@@ -24,7 +24,7 @@ module StackDeck
 
     class File < Context
       def initialize(filename, lineno)
-        super File.readlines(filename), lineno
+        super ::File.readlines(filename), lineno
       end
     end
   end

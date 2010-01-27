@@ -34,6 +34,9 @@ module StackDeck
     def context
       @context ||= Context::File.new(filename, lineno) if filename
     end
+    def context?
+      !filename.nil?
+    end
     def same_line?(other)
       other && self.filename == other.filename && self.lineno == other.lineno
     end
@@ -94,6 +97,9 @@ module StackDeck
       end
       def context
         @context ||= Context.new(@query.split(/\n/), lineno) if @query
+      end
+      def context?
+        !@query.nil?
       end
     end
   end
