@@ -44,7 +44,19 @@ module StackDeck
     def boundary?; false; end
 
     def to_s
-      "#{filename}:#{lineno}: in `#{function}' [#{language}]"
+      if filename
+        if function && function != ''
+          "#{filename}:#{lineno}:in `#{function}' [#{language}]"
+        else
+          "#{filename}:#{lineno} [#{language}]"
+        end
+      else
+        if function && function != ''
+          "(#{language}):#{lineno}:in `#{function}'"
+        else
+          "(#{language}):#{lineno}"
+        end
+      end
     end
 
     class Ruby < Frame
@@ -61,7 +73,11 @@ module StackDeck
         filename == __FILE__ && function == 'boundary'
       end
       def to_s
-        "#{filename}:#{lineno}: in `#{function}'"
+        if function && function != ''
+          "#{filename}:#{lineno}:in `#{function}'"
+        else
+          "#{filename}:#{lineno}"
+        end
       end
     end
 
